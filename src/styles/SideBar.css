@@ -1,0 +1,151 @@
+.sidebar{
+    position: relative;
+    width: 100%;
+}
+
+.sidebar__navigation{
+    position: fixed;
+    width: 280px;
+    background-color: var(--green2);
+    height: 100%;
+    border-left: 10px solid var(--green2);
+    transition: 0.5s;
+    overflow: hidden;
+}
+
+.sidebar__navigation ul{
+    position: absolute;
+    left: 0;
+    right: 0;
+    width: 100%;
+    /* background-color: red; */
+}
+.sidebar__navigation ul li{
+    position: relative;
+    width: 100%;
+    /* background: brown; */
+    list-style: none;
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+}
+.sidebar__navigation ul li:nth-child(1){
+    margin-bottom: 25px;
+    pointer-events: none;
+    color: var(--white);
+    font-size: 1.25em;
+}
+.sidebar__navigation ul li:hover,
+.sidebar__navigation ul li.hovered{
+    background-color: var(--white);
+}
+.sidebar__links{
+    position: relative;
+    display: flex;
+    text-decoration: none;
+    width: 100%;
+    color: var(--white);
+
+}
+
+.sidebar__navigation ul li:hover .sidebar__links,
+.sidebar__navigation ul li.hovered .sidebar__links{
+    color: var(--green2)
+}
+
+.sidebar__icons{
+    position: relative;
+    display: block;
+    min-width: 40px;
+    height: 50px;
+    line-height: 55px;
+    text-align: center;
+    font-size: 1.75em;
+}
+.sidebar__title{
+    position: relative;
+    display: block;
+    line-height: 50px;
+    text-align: start;
+    height: 50px;
+    padding: 0 0.9rem;
+    white-space: nowrap;
+}
+.sidebar__logo{
+    width: 30px;height: 30px;
+}
+
+
+/* Curve Outside */
+
+.sidebar__navigation ul li:hover .sidebar__links::before,
+.sidebar__navigation ul li.hovered .sidebar__links::before{
+    content: '';
+    position: absolute;
+    right: 0;
+    top: -50px;
+    width: 50px;
+    height: 50px;
+    background-color:transparent;
+    border-radius: 50%;
+    /* background-color: red; */
+    box-shadow: 25px 25px 0px 3px var(--white);
+    z-index: -1;
+}
+.sidebar__navigation ul li:hover .sidebar__links::after,
+.sidebar__navigation ul li.hovered .sidebar__links::after{
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: -50px;
+    width: 50px;
+    height: 50px;
+    background-color:transparent;
+    border-radius: 50%;
+    /* background-color: red; */
+    box-shadow: 25px -25px 0px 3px var(--white);
+}
+
+
+
+/* Header part */
+
+.sidebar__header{
+    position: absolute;
+    width: calc(100% - 280px);
+    left: 280px;
+    background-color: var(--white);
+    min-height: 100vh;
+    transition: 0.5s;
+}
+
+.sidebar__topbox{
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 1rem;
+    align-items: center;
+}
+
+.sidebar__toggle{
+    position: relative;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3em;
+    cursor: pointer;
+}
+
+/* Menu Toggle */
+
+.sidebar__navigation.active{
+    width: 60px;
+}
+
+.sidebar__header.active{
+    width: calc(100% - 60px);
+    position: relative;
+    left: 60px;
+}

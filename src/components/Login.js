@@ -1,13 +1,14 @@
 import React from 'react';
 import "../styles/Login.css";
-import { TextField } from "@mui/material"
+import { TextField } from "@mui/material";
+import image from "../images/img1.png";
 
 function Login() {
     return (
         <>
             <div className="login">
-                <div className="logo">
-                    <img src="https://s3-ap-southeast-1.amazonaws.com/biztory-wordpress-img/wp-content/uploads/2020/04/17220543/petty-cash-malaysia-300x300.png" alt='' />
+                <div className="login-logo">
+                    <img src={image} alt='' />
                 </div>
                 <form className="login-form">
                     <h2 className="title">Log In</h2>

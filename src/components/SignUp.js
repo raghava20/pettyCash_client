@@ -1,16 +1,17 @@
 import React from 'react';
 import "../styles/SignUp.css"
-import { TextField } from "@mui/material"
+import { TextField } from "@mui/material";
+import image from "../images/img1.png";
 
 function SignUp() {
     return (
         <>
             <div className="signup">
-                <div className="logo">
-                    <img src="https://s3-ap-southeast-1.amazonaws.com/biztory-wordpress-img/wp-content/uploads/2020/04/17220543/petty-cash-malaysia-300x300.png" alt='' />
+                <div className="signup-logo">
+                    <img src={image} alt='' />
                 </div>
                 <form className="signup-form">
-                    <h2 className="title">Sign In</h2>
+                    <h2 className="title">Sign Up</h2>
                     <div className="input-field">
                         <i className="fas fa-user"></i>
                         <TextField type="text" label="Name" variant="standard" fullWidth />

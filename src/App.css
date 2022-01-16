@@ -1,0 +1,17 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+:root{
+    --green:rgb(32, 241, 154);
+    --green2: rgb(73, 224, 73);
+    --white:#fff;
+    --white2:rgb(240, 240, 240);
+}
+
+body{
+    background-color: rgb(209, 209, 209);
+    /* background-color: white; */
+}
