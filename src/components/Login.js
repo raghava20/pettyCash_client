@@ -6,7 +6,7 @@ import image from "../images/img1.png";
 function Login() {
     return (
         <>
-            <div className="login">
+            <div className="loginPage">
                 <div className="login-logo">
                     <img src={image} alt='' />
                 </div>
@@ -20,10 +20,10 @@ function Login() {
                         <i className="fas fa-lock"></i>
                         <TextField type="password" label="Password" variant="standard" fullWidth />
                     </div>
-                    <button type="submit" className="btn">Login</button>
+                    <button type="submit" className="btns">Login</button>
                 </form>
-                <div className="footer1"><a href="/forgot-password">Forgot password?</a></div>
-                <div className="footer">Don't have an account yet? <a href="/signup">Sign Up</a></div>
+                <div className="footer1"><a href="/forgot-password" className="links">Forgot password?</a></div>
+                <div className="footer">Don't have an account yet? <a className="links" href="/signup">Sign Up</a></div>
             </div>
         </>
     )

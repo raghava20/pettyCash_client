@@ -8,7 +8,7 @@ function SignUp() {
         <>
             <div className="signup">
                 <div className="signup-logo">
-                    <img src={image} alt='' />
+                    <img src={image} alt='logo' />
                 </div>
                 <form className="signup-form">
                     <h2 className="title">Sign Up</h2>
@@ -30,9 +30,9 @@ function SignUp() {
                         <TextField type="text" label="Confirm Password" variant="standard" fullWidth />
 
                     </div>
-                    <button type="submit" className="btn">Sign Up</button>
+                    <button type="submit" className="spBtn">Sign Up</button>
                 </form>
-                <div className="footer">Already have an account? <a href='/'>Sign In</a></div>
+                <div className="footer">Already have an account? <a className="links" href='/login'>Sign In</a></div>
             </div>
         </>
     )
