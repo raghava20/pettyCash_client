@@ -1,14 +1,14 @@
-.sidebar{
+.sidebarPage{
     position: relative;
     width: 100%;
 }
 
 .sidebar__navigation{
     position: fixed;
-    width: 280px;
+    width: 300px;
     background-color: var(--green2);
     height: 100%;
-    border-left: 10px solid var(--green2);
+    /* border-left: 10px solid var(--green2); */
     transition: 0.5s;
     overflow: hidden;
 }
@@ -57,7 +57,7 @@
     display: block;
     min-width: 40px;
     height: 50px;
-    line-height: 55px;
+    line-height: 45px;
     text-align: center;
     font-size: 1.75em;
 }
@@ -73,7 +73,9 @@
 .sidebar__logo{
     width: 30px;height: 30px;
 }
-
+.sidebar__image{
+    color: var(--green2) !important;
+}
 
 /* Curve Outside */
 
@@ -111,8 +113,8 @@
 
 .sidebar__header{
     position: absolute;
-    width: calc(100% - 280px);
-    left: 280px;
+    width: calc(100% - 300px);
+    left: 300px;
     background-color: var(--white);
     min-height: 100vh;
     transition: 0.5s;
@@ -137,15 +139,49 @@
     font-size: 3em;
     cursor: pointer;
 }
+.sidebar__toggle:hover{
+    
+  animation: shake 0.5s;
+  animation-iteration-count: 1;
+}
+
+@keyframes shake {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    25% { transform: translate(-3px, 0px) rotate(1deg); }
+    50% { transform: translate(1px, -1px) rotate(1deg); }
+    75% { transform: translate(-3px, 1px) rotate(0deg); }
+    100% { transform: translate(1px, -2px) rotate(-1deg); }
+  }
 
 /* Menu Toggle */
 
 .sidebar__navigation.active{
-    width: 60px;
+    width: 83px;
+    
 }
 
 .sidebar__header.active{
-    width: calc(100% - 60px);
+    width: calc(100% - 83px);
     position: relative;
-    left: 60px;
+    left: 83px;
+}
+
+@media (max-width:426px) {
+    .sidebar__navigation.active{
+        width: 0;
+        transition:0s;
+    }
+    
+    .sidebar__header.active{
+        width: 100%;
+        position: relative;
+        left: 0;
+        transition:0s;
+    }
+}
+@media (max-width: 435px){
+    .sidebar__navigation.active{
+    
+        transition:0s;
+    }
 }

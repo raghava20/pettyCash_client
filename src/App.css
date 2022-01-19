@@ -12,6 +12,6 @@
 }
 
 body{
-    background-color: rgb(209, 209, 209);
-    /* background-color: white; */
-}
+    height: 100vh !important;
+    width: 100% !important;
+    background-image: linear-gradient(to right top, #6bd199, #5ed5c3, #76d5df, #9fd3e9, #c1d2e5, #c3d5ea, #c5d8ee, #c7dbf3, #a4e4ff, #72eeff, #4bf7ea, #5ffbc1);}

@@ -1,0 +1,9 @@
+.expensesListPage{
+    margin: 0.5rem auto;
+    padding: 0 1.5rem;
+    overflow: auto;
+}
+
+.expensesList__delButton{
+    color: #ec5e6f !important;
+}

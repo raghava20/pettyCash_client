@@ -1,5 +1,5 @@
 
-.login{
+.loginPage{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -39,7 +39,7 @@
 .title{
     text-align: center;
     color: var(--green);
-    font-size: 2em;
+    font-size: 2.2em;
 }
 
 .input-field{
@@ -60,7 +60,7 @@ i{
 }
 
 
-.btn{
+.btns{
     border-radius:5rem;
     width: 70%;
     margin: 0 auto;
@@ -76,7 +76,7 @@ i{
     transition: 0.2s;
     border: 1px solid black;
 }
-.btn:hover{
+.btns:hover{
     transform: scale(1.1)
 }
 
@@ -89,9 +89,9 @@ i{
     padding: 0.5rem;
     font-size: 0.9em;
 }
-a{
+.links{
     color: var(--green);
 }
-a:hover{
+.links:hover{
     color: rgb(135, 190, 212);
 }

@@ -1,4 +1,31 @@
-.dashboard{
+.dashboard__lineChart{
+    margin: 0.5rem auto;
+    padding:  1rem;
+    max-width: 900px;
+    height:100%;
+}
+
+
+
+
+
+
+
+
+
+
+@media (max-width:425px){
     
+    .dashboard__card{
+        width: 18rem !important;
+        font-size: 0.8em;
+    }
+}
+
+@media (min-width:426px) and (max-width:768px){
     
+    .dashboard__card{
+        width: 21rem !important;
+        font-size: 0.9em;
+    }
 }

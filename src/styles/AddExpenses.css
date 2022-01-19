@@ -1,0 +1,14 @@
+.addExpensesPage{
+    display: flex;
+    padding: 0 2rem;
+    margin: 1rem;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+.addExpensesBtn{
+    margin-left: 0.5rem;
+    margin-top: 1rem;
+    width: 480px;
+    display: flex ;
+    justify-content: center; ;
+}
