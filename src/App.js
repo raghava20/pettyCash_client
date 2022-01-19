@@ -7,13 +7,13 @@ import ResetPassword from './components/ResetPassword';
 import Dashboard from './components/Dashboard';
 import SideBar from './components/SideBar';
 import AddExpenses from './components/AddExpenses';
-
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
@@ -21,7 +21,7 @@ function App() {
       <Routes>
         <Route exact path="/dashboard" element={<SideBar />} />
         <Route exact path="/add-expenses" element={<SideBar />} />
-        <Route exact path="/list-expenses" element={<SideBar />} />
+        <Route exact path="/expenses-list" element={<SideBar />} />
         <Route exact path="/add-expenses" element={<SideBar />} />
       </Routes>
 
