@@ -8,7 +8,6 @@
     width: 300px;
     background-color: var(--green2);
     height: 100%;
-    /* border-left: 10px solid var(--green2); */
     transition: 0.5s;
     overflow: hidden;
 }
@@ -116,8 +115,9 @@
     width: calc(100% - 300px);
     left: 300px;
     background-color: var(--white);
-    min-height: 100vh;
     transition: 0.5s;
+    overflow-x: hidden;
+    height: 100vh;
 }
 
 .sidebar__topbox{
@@ -127,6 +127,7 @@
     justify-content: space-between;
     padding: 0 1rem;
     align-items: center;
+    transition:0.5s;
 }
 
 .sidebar__toggle{
@@ -157,31 +158,111 @@
 
 .sidebar__navigation.active{
     width: 83px;
-    
+    transition:0.5s;
 }
 
 .sidebar__header.active{
     width: calc(100% - 83px);
     position: relative;
     left: 83px;
+    overflow: hidden;
+    transition:0.5s;
+
 }
 
-@media (max-width:426px) {
-    .sidebar__navigation.active{
+/* @media (max-width:425px) {
+    .sidebar__navigation.active.mbScreen{
         width: 0;
         transition:0s;
     }
     
-    .sidebar__header.active{
+    .sidebar__header.active.mbScreen{
         width: 100%;
         position: relative;
         left: 0;
         transition:0s;
+        overflow: hidden;
+
     }
-}
-@media (max-width: 435px){
-    .sidebar__navigation.active{
-    
+} */
+@media (max-width:426px) {
+    .sidebar__navigation.mbScreen{
+        width: 0;
         transition:0s;
     }
+    
+    .sidebar__header.mbScreen{
+        width: 0;
+        transition:0s;
+        width: calc(100% - 0px);
+        position: relative;
+        left: 0px;
+        overflow: hidden;
+        transition:0s;
+
+    }    .sidebar__navigation{
+        width: 0px;
+        transition:0.5s;
+    }
+    
+    .sidebar__header{
+        width: calc(100% - 0px);
+        position: relative;
+        left: 0px;
+        overflow: hidden;
+        transition:0.5s;
+    
+    }
+    /* .sidebar__navigation{
+        width: 0px;
+        transition:0.5s;
+    }
+    
+    .sidebar__header{
+        width: calc(100% - 0px);
+        position: relative;
+        left: 0px;
+        overflow: hidden;
+        transition:0.5s;
+    
+    } */
+}
+@media(max-width:768px) and (min-width:426.2px){
+    .sidebar__navigation{
+    width: 83px;
+    transition:0.5s;
+}
+
+.sidebar__header{
+    width: calc(100% - 83px);
+    position: relative;
+    left: 83px;
+    overflow: hidden;
+    transition:0.5s;
+
+}
+
+}
+
+@media (max-width:768px) {
+    
+.sidebar__navigation.tabScreen{
+    position: fixed;
+    width: 300px;
+    background-color: var(--green2);
+    height: 100%;
+    transition: 0.5s;
+    overflow: hidden;
+}
+
+.sidebar__header.tabScreen{
+    position: absolute;
+    width: calc(100% - 300px);
+    left: 300px;
+    background-color: var(--white);
+    transition: 0.5s;
+    overflow-x: hidden;
+    height: 100vh;
+
+}
 }
