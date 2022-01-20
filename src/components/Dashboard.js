@@ -85,7 +85,7 @@ export default function Dashboard() {
 
 
     return (
-        <>
+        <div className="dashboardPage">
             <Container fluid>
                 <Row className="mt-2 justify-content-around overflow-auto" >
                     <Col className="d-flex justify-content-center gap-2 mb-2 " xl={4} lg="auto" md="auto" >
@@ -124,9 +124,9 @@ export default function Dashboard() {
                     </Col>
                 </Row >
             </Container >
-            <div className="dashboard__lineChart overflow-auto">
-                <Line options={options} data={data} />
+            <div className="dashboard__lineChart">
+                <Line className="overflow-auto" options={options} data={data} />
             </div>
-        </>
+        </div>
     )
 }

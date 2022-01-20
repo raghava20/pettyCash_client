@@ -47,15 +47,27 @@ export default function SideBar() {
     }, [])
 
 
+    let navigation = document.querySelector(".sidebar__navigation");
+    let header = document.querySelector(".sidebar__header");
 
     let toggleHandler = () => {
         //Menu toggle
-        let navigation = document.querySelector(".sidebar__navigation");
-        let header = document.querySelector(".sidebar__header");
 
         navigation.classList.toggle("active");
         header.classList.toggle("active");
+        navigation.classList.remove("mbScreen")
+        header.classList.remove("mbScreen")
+        navigation.classList.toggle("tabScreen")
+        header.classList.toggle("tabScreen")
 
+    }
+    let mobileScreenHandler = () => {
+        navigation.classList.toggle("mbScreen");
+        header.classList.toggle("mbScreen");
+        navigation.classList.remove("active");
+        header.classList.remove("active");
+        navigation.classList.remove("tabScreen")
+        header.classList.remove("tabScreen")
     }
     let createAccountHandler = () => {
         setCreate(true)
@@ -70,24 +82,33 @@ export default function SideBar() {
                     <ul>
                         <li>
                             <Link to={"#"} className="sidebar__links">
-                                <span className="sidebar__icons"> <img className="sidebar__logo" src={image} /></span>
+                                <span className="sidebar__icons"> <img className="sidebar__logo" src={image} alt="logo" /></span>
                                 <span className="sidebar__title">Petty Cash Manager</span>
                             </Link>
                         </li>
                         <li>
-                            <Link to={"/dashboard"} className="sidebar__links" onClick={() => setShow("dashboard")} >
+                            <Link to={"/dashboard"} className="sidebar__links" onClick={() => {
+                                setShow("dashboard")
+                                return mobileScreenHandler()
+                            }} >
                                 <span className="sidebar__icons"><DashboardIcon /> </span>
                                 <span className="sidebar__title">Dashboard</span>
                             </Link>
                         </li>
                         <li>
-                            <Link to={"/add-expenses"} className="sidebar__links" onClick={() => setShow("add-expenses")}>
+                            <Link to={"/add-expenses"} className="sidebar__links" onClick={() => {
+                                setShow("add-expenses")
+                                return mobileScreenHandler()
+                            }}>
                                 <span className="sidebar__icons"><AddShoppingCartIcon /> </span>
                                 <span className="sidebar__title">Add Expenses </span>
                             </Link>
                         </li>
                         <li>
-                            <Link to={"/expenses-list"} className="sidebar__links" onClick={() => setShow("list-expenses")}>
+                            <Link to={"/expenses-list"} className="sidebar__links" onClick={() => {
+                                setShow("expenses-list")
+                                return mobileScreenHandler()
+                            }}>
                                 <span className="sidebar__icons"><ListAltIcon /></span>
                                 <span className="sidebar__title">Expenses List</span>
                             </Link>
@@ -154,11 +175,11 @@ export default function SideBar() {
                         <IconButton className="sidebar__image " onClick={createAccountHandler}><PersonAddAlt1Icon fontSize="medium" /></IconButton>
 
                     </div>
-                </div>
+                </div >
                 <>
                     {show === "dashboard" ? <Dashboard /> : ""}
                     {show === "add-expenses" ? <AddExpenses /> : ""}
-                    {show === "list-expenses" ? <ExpensesList /> : ""}
+                    {show === "expenses-list" ? <ExpensesList /> : ""}
                 </>
             </div>
 
