@@ -4,9 +4,7 @@ import Login from './components/Login';
 import SignUp from './components/SignUp';
 import ForgotPassword from './components/ForgotPassword';
 import ResetPassword from './components/ResetPassword';
-import Dashboard from './components/Dashboard';
 import SideBar from './components/SideBar';
-import AddExpenses from './components/AddExpenses';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
@@ -22,7 +20,6 @@ function App() {
         <Route exact path="/dashboard" element={<SideBar />} />
         <Route exact path="/add-expenses" element={<SideBar />} />
         <Route exact path="/expenses-list" element={<SideBar />} />
-        <Route exact path="/add-expenses" element={<SideBar />} />
       </Routes>
 
     </BrowserRouter >
