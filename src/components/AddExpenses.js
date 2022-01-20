@@ -12,6 +12,12 @@ import MuiAlert from '@mui/material/Alert';
 
 export default function AddExpenses() {
     let [open, setOpen] = useState(false)
+    let [expensesCategory, setExpensesCategory] = useState()
+    let [date, setDate] = useState()
+    let [description, setDescription] = useState()
+    let [amount, setAmount] = useState()
+
+    //Alert box
     const Alert = React.forwardRef(function Alert(props, ref) {
         return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
     });
@@ -42,6 +48,10 @@ export default function AddExpenses() {
         onSubmit: values => {
             handleSave(values)
             setOpen(true)
+            setExpensesCategory("")
+            setDescription("")
+            setAmount("")
+            setDate("")
         }
     })
     let handleSave = async (data) => {
@@ -52,7 +62,7 @@ export default function AddExpenses() {
     return (
         <div className="addExpensesPage">
             <div className="d-flex justify-content-between p-1 mb-3">
-                <h1>Add Expenses</h1>
+                <h1 className="addExpenses-title">Add Expenses</h1>
                 {/* <span>
                     <button class="btn btn-outline-dark" type="button" >
                         <BorderColorIcon /> Total Exp
@@ -60,7 +70,8 @@ export default function AddExpenses() {
                     </button>
                 </span> */}
             </div>
-            <form onSubmit={formik.handleSubmit}>
+            <div></div>
+            <form onSubmit={formik.handleSubmit} className="addExpenses-form">
 
                 {/* <FloatingLabel className="p-1 mb-1" label="Invoice Number">
                     <Form.Control style={{ "max-width": '600px' }} type="text" name="invoiceNumber" placeholder="Enter Invoice no." onBlur={formik.handleBlur} onChange={formik.handleChange} value={formik.values.invoiceNumber} />
@@ -68,7 +79,7 @@ export default function AddExpenses() {
                 {formik.touched.invoiceNumber && formik.errors.invoiceNumber ? (<div style={{ color: "#dd1818" }}>{formik.errors.invoiceNumber}</div>) : null} */}
                 <div >
                     <FloatingLabel className="p-1 mb-1" label="Expenses Category" >
-                        <Form.Select style={{ "max-width": '490px' }} name="expensesCategory" onBlur={formik.handleBlur} onChange={formik.handleChange} value={formik.values.expensesCategory} >
+                        <Form.Select className="addExpenses-expensesCategory" name="expensesCategory" onBlur={formik.handleBlur} onChange={formik.handleChange} value={expensesCategory} >
                             <option value="">Select</option>
                             <option value="Conveyance">Conveyance Expenses</option>
                             <option value="Cartage">Cartage Expenses</option>
@@ -84,10 +95,10 @@ export default function AddExpenses() {
                     {formik.touched.expensesCategory && formik.errors.expensesCategory ? <ErrorMessage>{formik.errors.expensesCategory}</ErrorMessage> : null}
                 </div>
 
-                <div className="d-flex gap-3">
+                <div className="addExpenses-middle">
                     <div >
-                        <FloatingLabel className="p-1 mb-1" label="Amount(Rs.)">
-                            <Form.Control style={{ "max-width": '250px' }} type="number" name="amount" placeholder="Enter amount" onBlur={formik.handleBlur} onChange={formik.handleChange} value={formik.values.amount} />
+                        <FloatingLabel className="addExpenses-amount p-1 mb-1" label="Amount(Rs.)">
+                            <Form.Control className="addExpenses-amount" type="number" name="amount" placeholder="Enter amount" onBlur={formik.handleBlur} onChange={formik.handleChange} value={amount} />
                         </FloatingLabel>
 
                         {formik.touched.amount && formik.errors.amount ? <ErrorMessage>{formik.errors.amount}</ErrorMessage> : null}
@@ -95,18 +106,18 @@ export default function AddExpenses() {
 
                     <div >
                         <FloatingLabel className="p-1 mb-1" label="Date">
-                            <Form.Control style={{ "min-width": '240px' }} type="date" name="date" placeholder="Enter amount" onBlur={formik.handleBlur} onChange={formik.handleChange} value={formik.values.date} />
+                            <Form.Control className="addExpenses-date" type="date" name="date" placeholder="Enter amount" onBlur={formik.handleBlur} onChange={formik.handleChange} value={date} />
                         </FloatingLabel>
 
                         {formik.touched.date && formik.errors.date ? <ErrorMessage>{formik.errors.date}</ErrorMessage> : null}
                     </div>
                 </div>
                 <FloatingLabel className="p-1 mb-1" label="Description" >
-                    <Form.Control style={{ height: '100px', "max-width": '490px' }} name="description" as="textarea" placeholder="Leave a comment here" onBlur={formik.handleBlur} onChange={formik.handleChange} value={formik.values.description} />
+                    <Form.Control className="addExpenses-description" name="description" as="textarea" placeholder="Leave a comment here" onBlur={formik.handleBlur} onChange={formik.handleChange} value={description} />
                 </FloatingLabel>
                 {formik.touched.description && formik.errors.description ? <ErrorMessage>{formik.errors.description}</ErrorMessage> : null}
 
-                <button type="submit" onClick={handleSave} className="btn btn-primary addExpensesBtn" >Submit</button>
+                <button type="submit" onClick={handleSave} className="btn btn-primary addExpensesBtn addExpenses-submit" >Submit</button>
                 <Snackbar open={open} autoHideDuration={2000} onClose={handleClose} key={"top" + "right"}>
                     <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
                         Added Expenses!
