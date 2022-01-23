@@ -197,7 +197,7 @@
         width: calc(100% - 0px);
         position: relative;
         left: 0px;
-        overflow: hidden;
+        overflow-x: hidden;
         transition:0s;
 
     }    .sidebar__navigation{
@@ -209,7 +209,7 @@
         width: calc(100% - 0px);
         position: relative;
         left: 0px;
-        overflow: hidden;
+        overflow-x: hidden;
         transition:0.5s;
     
     }
@@ -237,7 +237,7 @@
     width: calc(100% - 83px);
     position: relative;
     left: 83px;
-    overflow: hidden;
+    overflow-x: hidden;
     transition:0.5s;
 
 }

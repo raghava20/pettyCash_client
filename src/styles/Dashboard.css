@@ -12,7 +12,17 @@
     width: clamp(600px,60vw,80rem);
     height:100%;
 }
+.dashboard__addAmt{
+    margin-top: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.5rem
+}
 
+.dashboard__deleteBtn{    
+    color: #ec5e6f !important;
+}
 
 @media (max-width:425px){
     

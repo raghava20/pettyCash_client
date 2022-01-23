@@ -15,3 +15,18 @@ body{
     height: 100vh !important;
     width: 100% !important;
     background-image: linear-gradient(to right top, #6bd199, #5ed5c3, #76d5df, #9fd3e9, #c1d2e5, #c3d5ea, #c5d8ee, #c7dbf3, #a4e4ff, #72eeff, #4bf7ea, #5ffbc1);}
+
+
+.error__message {
+    margin: 0;
+    padding: 0;
+    font-size: 0.95em;
+    display: block;
+    /* margin-left: 0.5rem auto; */
+    text-align: center;
+}
+@media (width < 426px) {
+    .error__message {
+        font-size: 0.75em;
+    }
+}
