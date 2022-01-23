@@ -31,7 +31,6 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    margin: 0.5rem 0;
     padding: 0.5rem;
     width: 100%;
 }
@@ -45,7 +44,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 0.5rem auto; 
+    margin: 0 auto; 
     gap: 0.35rem;
     height: 100%;
     width:80%;
@@ -62,7 +61,7 @@ i{
     border-radius:5rem;
     width: 70%;
     margin: 0 auto;
-    margin-top:1.5rem;
+    margin-top:0.5rem;
     padding: 0.5rem;
     height: 100%;
     font-size: 1.05em;
