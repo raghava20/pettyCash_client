@@ -25,7 +25,6 @@ export default function TransferredAmount({ value }) {
             refToken.current = localToken;           //store token in useRef hook to manipulate through request
             getData();                               //getting data from the database
         }
-
     }, [])
 
     //function to get data from database
