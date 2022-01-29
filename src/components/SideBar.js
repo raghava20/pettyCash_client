@@ -166,7 +166,10 @@ export default function SideBar() {
                                 <Button variant="secondary" onClick={() => setModelOpen(false)} >
                                     NO
                                 </Button>
-                                <Button variant="primary" onClick={() => navigate("/login")}>
+                                <Button variant="primary" onClick={() => {
+                                    localStorage.removeItem('token');
+                                    navigate("/login")
+                                }}>
                                     YES
                                 </Button>
                             </Modal.Footer>
