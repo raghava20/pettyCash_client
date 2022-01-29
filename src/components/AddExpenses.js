@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useFormik } from "formik";
 import { useNavigate } from 'react-router-dom';
 import * as yup from "yup"
@@ -10,9 +10,23 @@ import { ErrorMessage } from "./Utils";
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import { format } from 'date-fns'
+import jwt from "jsonwebtoken";
 
 export default function AddExpenses() {
     let [open, setOpen] = useState(false)
+
+    useEffect(() => {
+        const localToken = localStorage.getItem('token');
+
+        var decodedToken = jwt.decode(localToken);
+        if (decodedToken.exp * 1000 <= Date.now()) {
+            navigate('/login');
+        }
+        else {
+            refToken.current = localToken;
+        }
+
+    }, [])
 
     //Alert box
     const Alert = React.forwardRef(function Alert(props, ref) {
@@ -27,6 +41,7 @@ export default function AddExpenses() {
 
 
     let navigate = useNavigate();
+    let refToken = useRef();
     const formik = useFormik({
         initialValues: {
             // invoiceNumber: "",
@@ -54,6 +69,10 @@ export default function AddExpenses() {
             date: format(new Date(data.date), 'MM/dd/yyyy'),
             amount: data.amount,
             description: data.description
+        }, {
+            headers: {
+                token: refToken.current
+            }
         })
         console.log(addUserData)
         console.log(addUserData.data)

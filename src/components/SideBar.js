@@ -1,4 +1,4 @@
-import React, { useEffect, useState, } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import "../styles/SideBar.css"
 import DashboardIcon from '@mui/icons-material/Dashboard';
@@ -15,19 +15,38 @@ import ExpensesList from './ExpensesList';
 import Form from 'react-bootstrap/Form'
 import { Modal, Button } from 'react-bootstrap'
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
-
+import axios from "axios";
+import TransferredAmount from './TransferredAmount';
+import PaidIcon from '@mui/icons-material/Paid';
+import DateRangePicker from '@mui/lab/DateRangePicker';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import Stack from '@mui/material/Stack';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import { TextField, Box } from '@mui/material';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import PrintDetails from "./PrintDetails"
+import { PrintContext } from "../App"
 
 export default function SideBar() {
     let [show, setShow] = useState()
     let [showAccModal, setShowAccModal] = useState(false)
     let [create, setCreate] = useState(false)
     const [modelOpen, setModelOpen] = useState(false)
+    let [getAccountName, setAccountName] = useState("")
+    const [value, setValue] = useState([null, null]);
 
-    let navigate = useNavigate()
 
+    let navigate = useNavigate();
+    let context = useContext(PrintContext)
     const handleClose = () => setShowAccModal(false);
-    const handleSave = (input) => setShowAccModal(false);
-
+    const handleSave = async () => {
+        let tempValues = getAccountName;
+        setShowAccModal(false);
+        console.log(tempValues);
+        return await axios.post("http://localhost:3001/dashboard", {
+            accountName: tempValues
+        })
+    }
     useEffect(() => {
         //hovering effect on the links
         let list = document.querySelectorAll(".sidebar__navigation li");
@@ -42,7 +61,9 @@ export default function SideBar() {
         })
 
         setShow("dashboard")
-        navigate("/dashboard")
+        console.log(context)
+        console.log(context.companyName)
+        // navigate("/dashboard")
 
     }, [])
 
@@ -107,10 +128,21 @@ export default function SideBar() {
                         <li>
                             <Link to={"/expenses-list"} className="sidebar__links" onClick={() => {
                                 setShow("expenses-list")
+                                setValue([null, null])
                                 return mobileScreenHandler()
                             }}>
                                 <span className="sidebar__icons"><ListAltIcon /></span>
                                 <span className="sidebar__title">Expenses List</span>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to={"/transferred-amount"} className="sidebar__links" onClick={() => {
+                                setShow("transferred-amount")
+                                setValue([null, null])
+                                return mobileScreenHandler()
+                            }}>
+                                <span className="sidebar__icons"><PaidIcon /></span>
+                                <span className="sidebar__title">Transferred Amount</span>
                             </Link>
                         </li>
                         <li>
@@ -134,7 +166,7 @@ export default function SideBar() {
                                 <Button variant="secondary" onClick={() => setModelOpen(false)} >
                                     NO
                                 </Button>
-                                <Button variant="primary" onClick={() => setModelOpen(false)}>
+                                <Button variant="primary" onClick={() => navigate("/login")}>
                                     YES
                                 </Button>
                             </Modal.Footer>
@@ -148,17 +180,36 @@ export default function SideBar() {
                     <div className="sidebar__toggle" onClick={toggleHandler}>
                         <MenuIcon fontSize="large" />
                     </div>
-                    <div className="d-flex">
+                    <div className="sidebar__toggle2" >
+                        {show === "dashboard" ? <PrintDetails /> : ""}
+                    </div>
+
+                    {show === "transferred-amount" || show === "expenses-list" ?
+                        <div className="date-range-picker me-4">
+
+                            <LocalizationProvider size="sm" dateAdapter={AdapterDateFns}>
+                                <Stack size="sm">
+                                    <DateRangePicker size="sm" value={value} onChange={newvalue => setValue(newvalue)} renderInput={(startProps, endProps) => (
+                                        <React.Fragment>
+                                            <TextField {...startProps} size="sm" />
+                                            <TextField {...endProps} className="ms-1" size="sm" />
+                                        </React.Fragment>
+                                    )} />
+                                </Stack>
+                            </LocalizationProvider>
+                        </div> : ""}
+                    {/* <div className="d-flex">
                         <Form.Select style={{ "max-width": '113px' }} size="sm" name="expensesCategory" >
                             <option value="">Accounts</option>
-                            <option value="Conveyance">Conveyance Expenses</option>
+
+
                             {create ? (<Modal show={showAccModal} onHide={handleClose}>
                                 <Modal.Header closeButton>
                                     <Modal.Title>Create Account</Modal.Title>
                                 </Modal.Header>
                                 <Modal.Body>
                                     <FloatingLabel className="p-1 mb-1" label="Account Name">
-                                        <Form.Control type="text" name="Account Name" placeholder="Enter amount" required />
+                                        <Form.Control type="text" name="Account Name" placeholder="Enter amount" required onChange={(e) => setAccountName(e.target.value)} />
                                     </FloatingLabel>
                                 </Modal.Body>
                                 <Modal.Footer>
@@ -172,14 +223,24 @@ export default function SideBar() {
                             </Modal>) : null}
                         </Form.Select>
 
-                        <IconButton className="sidebar__image " onClick={createAccountHandler}><PersonAddAlt1Icon fontSize="medium" /></IconButton>
+                        <IconButton className="sidebar__image " onClick={createAccountHandler}>
+                            <PersonAddAlt1Icon fontSize="medium" />
+                        </IconButton>
 
-                    </div>
+                    </div> */}
                 </div >
+                {/* Printing the company details */}
+                <div className="sidebar__printDetails">
+                    <h6>{context.data.companyName}</h6>
+                    <p>Address: {context.data.address}</p>
+                    <p>Email: {context.data.email}</p>
+                    <p>Contact No: {context.data.contact}</p>
+                </div>
                 <>
                     {show === "dashboard" ? <Dashboard /> : ""}
                     {show === "add-expenses" ? <AddExpenses /> : ""}
-                    {show === "expenses-list" ? <ExpensesList /> : ""}
+                    {show === "expenses-list" ? <ExpensesList value={value} /> : ""}
+                    {show === "transferred-amount" ? <TransferredAmount value={value} /> : ""}
                 </>
             </div>
 
