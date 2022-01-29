@@ -8,45 +8,40 @@ import { PrintContext } from "../App"
 import jwt from "jsonwebtoken"
 
 export default function PrintDetails() {
-    const [showModal, setShowModal] = useState(false)
-    const [companyName, setCompanyName] = useState("")
-    const [address, setAddress] = useState("")
-    const [email, setEmail] = useState("")
-    const [contact, setContact] = useState("")
-    const [enableButton, setEnableButton] = useState(false)
-    const [data, setData] = useState([])
+    const [showModal, setShowModal] = useState(false)       //hook to handle add details modal
+    const [companyName, setCompanyName] = useState("")      //hook to handle store company name
+    const [address, setAddress] = useState("")              //hook to handle store address
+    const [email, setEmail] = useState("")                  //hook to handle store email
+    const [contact, setContact] = useState("")              //hook to handle store contact
+    const [enableButton, setEnableButton] = useState(false) //hook to handle disable button on input
+
+    let context = useContext(PrintContext)      //getting data from context api
+    let navigate = useNavigate();               //for changing the route
+    let refToken = useRef();                    //useRef hook - here using for storing token
 
     useEffect(() => {
-        const localToken = localStorage.getItem('token');
-        var decodedToken = jwt.decode(localToken);
-        if (decodedToken.exp * 1000 <= Date.now()) {
-            console.log("print logout")
+        const localToken = localStorage.getItem('token');   //getting token from localStorage
+        var decodedToken = jwt.decode(localToken);          //decode the token from localStorage
+        if (decodedToken.exp * 1000 <= Date.now()) {        //check if token is expired or not
             navigate('/login');
         }
         else {
-            refToken.current = localToken;
-            console.log("local token", localToken)
+            refToken.current = localToken;          //store token in useRef hook to manipulate through request
             getDataFromDB();
         }
-
     }, [])
 
-    let context = useContext(PrintContext)
-    let navigate = useNavigate();
-    let refToken = useRef();
-
+    // getting data from database
     const getDataFromDB = async () => {
-        let { data: [{ companyName, address, email, contact }] } = await axios.get("http://localhost:3001/dashboard/print-details", {
+        let { data: [{ companyName, address, email, contact }] } = await axios.get("http://localhost:3001/dashboard/print-details", {       //Destructured the data
             headers: {
-                token: refToken.current
+                token: refToken.current     //passing token in header to process request
             }
         })
-        console.log(data)
-        setCompanyName(companyName)
-        setAddress(address)
-        setEmail(email)
-        setContact(contact)
-        console.log(companyName, email, contact, address)
+        setCompanyName(companyName)         //setting company name
+        setAddress(address)                 //setting address
+        setEmail(email)                     //setting email
+        setContact(contact)                 //setting contact
         const dataToContext = () => {
             context.setData({
                 companyName: companyName,
@@ -55,42 +50,41 @@ export default function PrintDetails() {
                 contact: contact
             })
         }
-        dataToContext();
+        dataToContext();           //pushing current details to context api to share data with multiple components
     }
 
-
+    // function will run after submit button is clicked
     const handleSave = async (e) => {
-        e.preventDefault();
-        let dbData = await axios.put("http://localhost:3001/dashboard/print-details",
+        e.preventDefault();                 //to prevent page reload of form's default behavior
+        await axios.put("http://localhost:3001/dashboard/print-details",
             {
                 companyName: companyName,
                 address: address,
                 email: email,
-                contact: parseInt(contact)
+                contact: parseInt(contact)          //parsing the contact to a number
             },
             {
                 headers: {
-                    token: refToken.current
+                    token: refToken.current         //store token in useRef hook to manipulate through request
                 }
             })
-        setEnableButton(true)
-        console.log(dbData.data)
-        setShowModal(false)
-        setData(dbData.data)
-        navigate('/dashboard')
+        setEnableButton(true)               //once input gets added, trigger the disable attribute 
+        setShowModal(false)                 //close print details modal
+        navigate('/dashboard')              //after all done, changing route to dashboard
     }
     const handleReset = async (e) => {
-        e.preventDefault()
-        setEnableButton(false)
-        navigate('/dashboard')
+        e.preventDefault()              //to prevent page reload of form's default behavior
+        setEnableButton(false)          //triggered to enable the input to edit
+        navigate('/dashboard')          //after all done, changing route to dashboard
     }
 
     return (
-
         <div className="printDetails__addDetails-btn">
             <Link to={"/dashboard/print-details"}>
                 <Button size="sm" variant="outline-success" onClick={() => setShowModal(true)}>Add Details</Button>
             </Link>
+
+            {/* for adding print details */}
             <Modal show={showModal} onHide={() => {
                 navigate('/dashboard')
                 setShowModal(false)
@@ -100,6 +94,7 @@ export default function PrintDetails() {
                         Do you want to add print details?
                     </Modal.Title>
                 </Modal.Header>
+
                 <Modal.Body fluid="true">
                     <form className="dashboard-form">
                         <div >

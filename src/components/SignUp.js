@@ -9,26 +9,28 @@ import axios from "axios";
 import { ErrorMessage } from "./Utils";
 
 function SignUp() {
-    const [error, setError] = useState(null)
-    const [disabled, setDisabled] = useState(false)
+    const [error, setError] = useState(null)            //hook to display error message from the server
+    const [disabled, setDisabled] = useState(false)     //hook to handle sign up button
 
     const onSubmit = async (values) => {
-        const { confirmPassword, ...data } = values;
+        const { confirmPassword, ...data } = values;            //Destructured the values from formik
         const response = await axios
             .post("http://localhost:3001/signup", data)
             .catch((err) => {
                 if (err && err.response)
                     console.log(err.response)
-                setError(err.response.data.message);
+                setError(err.response.data.message);        //setting the error message from the server to display on UI
             });
         setError(response.data.message)
         if (response.data.message === "Successfully Registered!") {
-            console.log("came")
-            return setDisabled(true)
+            return setDisabled(true)                    //disable the sign up button once it gets success message from server
         }
     }
 
+    //regex for password validation
     const PASSWORD_REGEX = /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/
+
+    //formik for handling form validation
     const { handleBlur, handleChange, handleSubmit, errors, touched, values } = useFormik({
         initialValues: {
             name: "",
@@ -50,7 +52,6 @@ function SignUp() {
         onSubmit,
     })
 
-
     return (
         <>
             <div className="signup">
@@ -59,30 +60,39 @@ function SignUp() {
                 </div>
                 <form className="signup-form" onSubmit={handleSubmit}>
                     <h2 className="title">Sign Up</h2>
+
+                    {/* display the error message from the server*/}
                     <div className="error__message">{error ? (<ErrorMessage>{error}</ErrorMessage>) : ""}</div>
+
                     <div className="input-field">
                         <i className="fas fa-user"></i>
                         <TextField type="text" label="Name" name="name" variant="standard" fullWidth onChange={handleChange} onBlur={handleBlur} value={values.name} />
                     </div>
                     <div className="error__message">{touched.name && errors.name ? (<ErrorMessage>{errors.name}</ErrorMessage>) : null}</div>
+
                     <div className="input-field">
                         <i className="fas fa-envelope"></i>
                         <TextField type="text" label="Email" name="email" variant="standard" fullWidth onChange={handleChange} onBlur={handleBlur} value={values.email} />
                     </div>
                     <div className="error__message">{touched.email && errors.email ? (<ErrorMessage>{errors.email}</ErrorMessage>) : null}</div>
+
                     <div className="input-field">
                         <i className="fas fa-lock"></i>
                         <TextField type="password" label="Password" name="password" variant="standard" fullWidth onChange={handleChange} onBlur={handleBlur} value={values.password} />
                     </div>
                     <div className="error__message"> {touched.password && errors.password ? (<ErrorMessage>{errors.password}</ErrorMessage>) : null}</div>
+
                     <div className="input-field">
                         <i className="fas fa-lock"></i>
                         <TextField type="password" label="Confirm Password" name="confirmPassword" variant="standard" fullWidth onChange={handleChange} onBlur={handleBlur} value={values.confirmPassword} />
                     </div>
                     <div className="error__message">{touched.confirmPassword && errors.confirmPassword ? (<ErrorMessage>{errors.confirmPassword}</ErrorMessage>) : null}</div>
+
                     <button type="submit" className="spBtn" disabled={disabled}>Sign Up</button>
                 </form>
-                <div className="footer">Already have an account? <Link className="links" to='/login'>Sign In</Link></div>
+                <div className="footer">
+                    Already have an account? <Link className="links" to='/login'>Sign In</Link>
+                </div>
             </div>
         </>
     )

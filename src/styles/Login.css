@@ -33,7 +33,6 @@
     flex-direction: column;
     justify-content: center;
     margin: 0.5rem 0;
-    /* padding: 0.5rem; */
     width: 100%;
 }
 .title{
@@ -46,7 +45,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    /* margin: 0.5rem auto;  */
     gap: 0.35rem;
     height: 100%;
     width:80%;
@@ -56,9 +54,7 @@ i{
     color: var(--green);
     position: relative;
     top:10px;
-
 }
-
 
 .btns{
     border-radius:5rem;
@@ -97,6 +93,7 @@ i{
 }
 
 
+/* media query*/
 @media (width <= 426px) {
     .title{
         font-size: 1.5em;

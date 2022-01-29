@@ -8,10 +8,10 @@ import ResetPassword from './components/ResetPassword';
 import SideBar from './components/SideBar';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-export const PrintContext = React.createContext('')
+export const PrintContext = React.createContext('')       //context api for getting print details
 
 function App() {
-  const [data, setData] = useState([])
+  const [data, setData] = useState([])                    //hook to store print details
   return (
     <PrintContext.Provider value={{ data, setData }}>
       <BrowserRouter>
@@ -28,7 +28,6 @@ function App() {
           <Route exact path="/transferred-amount" element={<SideBar />} />
           <Route exact path="/dashboard/print-details" element={<SideBar />} />
         </Routes>
-
       </BrowserRouter >
     </PrintContext.Provider>
   );

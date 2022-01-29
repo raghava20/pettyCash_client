@@ -6,47 +6,29 @@ import ListAltIcon from '@mui/icons-material/ListAlt';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
-import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
-import IconButton from '@mui/material/IconButton';
 import image from "../images/img1.png"
 import Dashboard from './Dashboard';
 import AddExpenses from './AddExpenses';
 import ExpensesList from './ExpensesList';
-import Form from 'react-bootstrap/Form'
 import { Modal, Button } from 'react-bootstrap'
-import FloatingLabel from 'react-bootstrap/FloatingLabel';
-import axios from "axios";
 import TransferredAmount from './TransferredAmount';
 import PaidIcon from '@mui/icons-material/Paid';
 import DateRangePicker from '@mui/lab/DateRangePicker';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import Stack from '@mui/material/Stack';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import { TextField, Box } from '@mui/material';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import { TextField } from '@mui/material';
 import PrintDetails from "./PrintDetails"
 import { PrintContext } from "../App"
 
 export default function SideBar() {
-    let [show, setShow] = useState()
-    let [showAccModal, setShowAccModal] = useState(false)
-    let [create, setCreate] = useState(false)
-    const [modelOpen, setModelOpen] = useState(false)
-    let [getAccountName, setAccountName] = useState("")
-    const [value, setValue] = useState([null, null]);
+    let [show, setShow] = useState()                        //hook to handle the routes
+    const [modelOpen, setModelOpen] = useState(false)       //hook to handle logout modal
+    const [value, setValue] = useState([null, null]);       //hook to handle date range provided by the user
 
+    let navigate = useNavigate();                       //for changing the route
+    let context = useContext(PrintContext)              //getting the data(print details) from context api
 
-    let navigate = useNavigate();
-    let context = useContext(PrintContext)
-    const handleClose = () => setShowAccModal(false);
-    const handleSave = async () => {
-        let tempValues = getAccountName;
-        setShowAccModal(false);
-        console.log(tempValues);
-        return await axios.post("http://localhost:3001/dashboard", {
-            accountName: tempValues
-        })
-    }
     useEffect(() => {
         //hovering effect on the links
         let list = document.querySelectorAll(".sidebar__navigation li");
@@ -59,47 +41,37 @@ export default function SideBar() {
         list.forEach(item => {
             item.addEventListener("mouseover", activeLink)
         })
-
-        setShow("dashboard")
-        console.log(context)
-        console.log(context.companyName)
-        // navigate("/dashboard")
-
     }, [])
 
 
     let navigation = document.querySelector(".sidebar__navigation");
     let header = document.querySelector(".sidebar__header");
 
+    //Menu toggle
     let toggleHandler = () => {
-        //Menu toggle
-
         navigation.classList.toggle("active");
         header.classList.toggle("active");
-        navigation.classList.remove("mbScreen")
+        navigation.classList.remove("mbScreen")         //while on the desktop screen, removing class name "mbscreen"
         header.classList.remove("mbScreen")
         navigation.classList.toggle("tabScreen")
         header.classList.toggle("tabScreen")
 
     }
+
+    //run for mobile screens
     let mobileScreenHandler = () => {
         navigation.classList.toggle("mbScreen");
         header.classList.toggle("mbScreen");
-        navigation.classList.remove("active");
+        navigation.classList.remove("active");      //while on the mobile screen, removing class name "active" & "tabScreen"
         header.classList.remove("active");
         navigation.classList.remove("tabScreen")
         header.classList.remove("tabScreen")
-    }
-    let createAccountHandler = () => {
-        setCreate(true)
-        setShowAccModal(true)
     }
 
     return (
         <>
             <div className="sidebarPage">
                 <div className="sidebar__navigation">
-
                     <ul>
                         <li>
                             <Link to={"#"} className="sidebar__links">
@@ -178,6 +150,7 @@ export default function SideBar() {
                     </ul>
                 </div>
             </div>
+
             <div className="sidebar__header">
                 <div className="sidebar__topbox">
                     <div className="sidebar__toggle" onClick={toggleHandler}>
@@ -187,6 +160,7 @@ export default function SideBar() {
                         {show === "dashboard" ? <PrintDetails /> : ""}
                     </div>
 
+                    {/* display the date range input after the respective route is triggered */}
                     {show === "transferred-amount" || show === "expenses-list" ?
                         <div className="date-range-picker me-4">
 
@@ -201,37 +175,8 @@ export default function SideBar() {
                                 </Stack>
                             </LocalizationProvider>
                         </div> : ""}
-                    {/* <div className="d-flex">
-                        <Form.Select style={{ "max-width": '113px' }} size="sm" name="expensesCategory" >
-                            <option value="">Accounts</option>
-
-
-                            {create ? (<Modal show={showAccModal} onHide={handleClose}>
-                                <Modal.Header closeButton>
-                                    <Modal.Title>Create Account</Modal.Title>
-                                </Modal.Header>
-                                <Modal.Body>
-                                    <FloatingLabel className="p-1 mb-1" label="Account Name">
-                                        <Form.Control type="text" name="Account Name" placeholder="Enter amount" required onChange={(e) => setAccountName(e.target.value)} />
-                                    </FloatingLabel>
-                                </Modal.Body>
-                                <Modal.Footer>
-                                    <Button variant="secondary" onClick={handleClose}>
-                                        Close
-                                    </Button>
-                                    <Button variant="primary" onClick={handleSave}>
-                                        Save Changes
-                                    </Button>
-                                </Modal.Footer>
-                            </Modal>) : null}
-                        </Form.Select>
-
-                        <IconButton className="sidebar__image " onClick={createAccountHandler}>
-                            <PersonAddAlt1Icon fontSize="medium" />
-                        </IconButton>
-
-                    </div> */}
                 </div >
+
                 {/* Printing the company details */}
                 <div className="sidebar__printDetails">
                     <h6>{context.data.companyName}</h6>

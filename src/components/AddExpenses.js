@@ -13,22 +13,23 @@ import { format } from 'date-fns'
 import jwt from "jsonwebtoken";
 
 export default function AddExpenses() {
-    let [open, setOpen] = useState(false)
+    let [open, setOpen] = useState(false)       //for handling alert box 
+    let navigate = useNavigate();               //for changing the route
+    let refToken = useRef();                    //useRef hook - here using for storing token
 
     useEffect(() => {
-        const localToken = localStorage.getItem('token');
-
-        var decodedToken = jwt.decode(localToken);
-        if (decodedToken.exp * 1000 <= Date.now()) {
+        const localToken = localStorage.getItem('token');  //getting token from localStorage
+        var decodedToken = jwt.decode(localToken);         //decode the token from localStorage
+        if (decodedToken.exp * 1000 <= Date.now()) {       //check if token is expired or not
             navigate('/login');
         }
         else {
-            refToken.current = localToken;
+            refToken.current = localToken;      //store token in useRef hook to manipulate through request
         }
 
     }, [])
 
-    //Alert box
+    //Alert box will run once the request has finished
     const Alert = React.forwardRef(function Alert(props, ref) {
         return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
     });
@@ -39,19 +40,15 @@ export default function AddExpenses() {
         setOpen(false);
     };
 
-
-    let navigate = useNavigate();
-    let refToken = useRef();
+    //formik for handling form validation
     const formik = useFormik({
         initialValues: {
-            // invoiceNumber: "",
             expensesCategory: "",
             date: "",
             amount: "",
             description: ""
         },
         validationSchema: yup.object({
-            // invoiceNumber: yup.string().required("Please enter Invoice no."),
             expensesCategory: yup.string().required("Please select anyone of the following Expenses!"),
             date: yup.date().required("Please add date!"),
             amount: yup.number().min(1).required("Please enter amount!"),
@@ -59,42 +56,29 @@ export default function AddExpenses() {
         }),
         onSubmit: (values) => {
             handleSave(values)
-            formik.resetForm();
+            formik.resetForm();     //resetform function clear the values in the form after validation is passed
         }
     })
+
     let handleSave = async (data) => {
-        setOpen(true)
-        let addUserData = await axios.post("http://localhost:3001/add-expenses", {
+        await axios.post("http://localhost:3001/add-expenses", {
             expensesCategory: data.expensesCategory,
-            date: format(new Date(data.date), 'MM/dd/yyyy'),
+            date: format(new Date(data.date), 'MM/dd/yyyy'),        //formatting date using date-fns package
             amount: data.amount,
             description: data.description
         }, {
             headers: {
-                token: refToken.current
+                token: refToken.current             //passing token in header to process request
             }
         })
-        console.log(addUserData)
-        console.log(addUserData.data)
+        setOpen(true)       //trigger alert box
     }
     return (
         <div className="addExpensesPage">
             <div className="d-flex justify-content-between p-1 mb-3">
                 <h1 className="addExpenses-title">Add Expenses</h1>
-                {/* <span>
-                    <button class="btn btn-outline-dark" type="button" >
-                        <BorderColorIcon /> Total Exp
-                        <span class="badge bg-dark text-white ms-1 rounded-pill">amt</span>
-                    </button>
-                </span> */}
             </div>
-            <div></div>
             <form onSubmit={formik.handleSubmit} className="addExpenses-form">
-
-                {/* <FloatingLabel className="p-1 mb-1" label="Invoice Number">
-                    <Form.Control style={{ "max-width": '600px' }} type="text" name="invoiceNumber" placeholder="Enter Invoice no." onBlur={formik.handleBlur} onChange={formik.handleChange} value={formik.values.invoiceNumber} />
-                </FloatingLabel>
-                {formik.touched.invoiceNumber && formik.errors.invoiceNumber ? (<div style={{ color: "#dd1818" }}>{formik.errors.invoiceNumber}</div>) : null} */}
                 <div >
                     <FloatingLabel className="p-1 mb-1" label="Expenses Category" >
                         <Form.Select className="addExpenses-expensesCategory" name="expensesCategory" onBlur={formik.handleBlur} onChange={formik.handleChange} value={formik.values.expensesCategory} >
@@ -118,7 +102,6 @@ export default function AddExpenses() {
                         <FloatingLabel className="addExpenses-amount p-1 mb-1" label="Amount(Rs.)">
                             <Form.Control className="addExpenses-amount" type="number" name="amount" placeholder="Enter amount" onBlur={formik.handleBlur} onChange={formik.handleChange} value={formik.values.amount} />
                         </FloatingLabel>
-
                         {formik.touched.amount && formik.errors.amount ? <ErrorMessage>{formik.errors.amount}</ErrorMessage> : null}
                     </div>
 
@@ -126,7 +109,6 @@ export default function AddExpenses() {
                         <FloatingLabel className="p-1 mb-1" label="Date">
                             <Form.Control className="addExpenses-date" type="date" name="date" placeholder="Enter amount" onBlur={formik.handleBlur} onChange={formik.handleChange} value={formik.values.date} />
                         </FloatingLabel>
-
                         {formik.touched.date && formik.errors.date ? <ErrorMessage>{formik.errors.date}</ErrorMessage> : null}
                     </div>
                 </div>
@@ -136,6 +118,7 @@ export default function AddExpenses() {
                 {formik.touched.description && formik.errors.description ? <ErrorMessage>{formik.errors.description}</ErrorMessage> : null}
 
                 <button type="submit" onClick={handleSave} className="btn btn-primary addExpensesBtn addExpenses-submit" >Submit</button>
+
                 <Snackbar open={open} autoHideDuration={2000} onClose={handleClose} key={{ vertical: "top", horizontal: "right" }}>
                     <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
                         Added Expenses!

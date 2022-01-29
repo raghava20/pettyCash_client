@@ -8,67 +8,65 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import jwt from "jsonwebtoken";
 
 export default function TransferredAmount({ value }) {
-    const [data, setData] = useState([]);
-    const [totalAmount, setTotalAmount] = useState("");
+    const [data, setData] = useState([]);                   //hook to store data from the database
+    const [totalAmount, setTotalAmount] = useState("");     //hook to add the amount from the database
 
-    let navigate = useNavigate();
-    let refToken = useRef();
+    let navigate = useNavigate();           //for changing the route
+    let refToken = useRef();                //useRef hook - here using for storing token
 
     useEffect(() => {
-        const localToken = localStorage.getItem('token');
-
-        var decodedToken = jwt.decode(localToken);
-        if (decodedToken.exp * 1000 <= Date.now()) {
+        const localToken = localStorage.getItem('token');       //getting the token from localStorage
+        var decodedToken = jwt.decode(localToken);              //decode the token from localStorage
+        if (decodedToken.exp * 1000 <= Date.now()) {            //check if token is expired or not
             navigate('/login');
         }
         else {
-            refToken.current = localToken;
-            getData();
+            refToken.current = localToken;           //store token in useRef hook to manipulate through request
+            getData();                               //getting data from the database
         }
 
     }, [])
 
+    //function to get data from database
     let getData = async () => {
         let data = await axios.get("http://localhost:3001/transferred-amount", {
             headers: {
                 token: refToken.current
             }
         })
-        console.log(data)
         setData(data.data);
         addingAmount(data.data)
     }
+
+    //function to add only all the amount from database
     let addingAmount = async (item) => {
-        console.log("Adding is working")
         let data = item;
         let result = await data.map(item => item.amount).reduce((previousValue, currentValue) => {
             return previousValue + currentValue
         })
         if (result === 0 || isNaN(result) || result === null) return setTotalAmount(0)
-        return setTotalAmount(result)
+        return setTotalAmount(result)                   //setting total amount
     }
 
     let dateRangePicker = async () => {
         let formatDate1 = new Date(value[0]).getTime()
         let formatDate2 = new Date(value[1]).getTime()
-        if (!formatDate1 || !formatDate2) return
+        if (!formatDate1 || !formatDate2) return                //return nothing if date doesn't provide
         let dbData = await axios.get("http://localhost:3001/transferred-amount", {
             headers: {
-                token: refToken.current
+                token: refToken.current                 //passing token in header to process request
             }
         })
         let dates = dbData.data;
-        let result = dates.filter(data => {
+        let result = dates.filter(data => {             //filtering out the data between the date range
             let value = new Date(data.date).getTime()
-            console.log(value)
             return value >= formatDate1 && value <= formatDate2;
         })
-        setData(result)
+        setData(result)                     //setting the data between the date range provided
         let amount = result.map(item => item.amount).reduce((previousValue, currentValue) => {
             return previousValue + currentValue
         })
-        setTotalAmount(amount)
-
+        setTotalAmount(amount)              //setting the total amount from data range specified by user
     }
 
     return (
@@ -90,6 +88,8 @@ export default function TransferredAmount({ value }) {
                         </tr>
                     </thead>
                     <tbody>
+
+                        {/* display the data from the database one by one with the help of map function*/}
                         {data.map((item, key) => {
                             return <tr>
                                 <td>{key + 1}</td>
@@ -97,11 +97,6 @@ export default function TransferredAmount({ value }) {
                                 <td>{item.bankName}</td>
                                 <td>{item.accountNumber}</td>
                                 <td>{item.amount}</td>
-                                {/* <td className="text-center">
-                                    <IconButton className="expensesList__delButton" onClick={() => handleShow(item)}>
-                                        <CloseIcon />
-                                    </IconButton>
-                                </td> */}
                             </tr>
                         })}
                         <tr>

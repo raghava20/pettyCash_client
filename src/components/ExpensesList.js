@@ -6,97 +6,88 @@ import { IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { Modal, Container, Row, Col, Button } from 'react-bootstrap';
 import axios from "axios";
-import { format } from 'date-fns'
-import moment from 'moment'
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import jwt from "jsonwebtoken";
 
 export default function ExpensesList({ value }) {
-    const [show, setShow] = useState(false);
-    const [data, setData] = useState([]);
-    const [passData, setPassData] = useState("");
-    const [totalAmount, setTotalAmount] = useState("");
+    const [show, setShow] = useState(false);        //hook to handle delete expense modal
+    const [data, setData] = useState([]);           //hook to save data from database
+    const [passData, setPassData] = useState("");   //hook to pass the data to modal
+    const [totalAmount, setTotalAmount] = useState("");     //hook to handle added total amount from database
 
-    let navigate = useNavigate();
-    let refToken = useRef();
-
-    const handleClose = () => setShow(false);
-    const handleShow = (item) => {
-        setShow(true)
-        setPassData(item)
-        console.log(item)
-    };
+    let navigate = useNavigate();       //for changing the route
+    let refToken = useRef();            //useRef hook - here using for storing token
 
     useEffect(() => {
-        const localToken = localStorage.getItem('token');
-
-        var decodedToken = jwt.decode(localToken);
-        if (decodedToken.exp * 1000 <= Date.now()) {
+        const localToken = localStorage.getItem('token');       //getting token from localStorage
+        var decodedToken = jwt.decode(localToken);              //decode the token from localStorage
+        if (decodedToken.exp * 1000 <= Date.now()) {            //check if token is expired or not
             navigate('/login');
         }
         else {
-            refToken.current = localToken;
-            getData();
+            refToken.current = localToken;              //store token in useRef hook to manipulate through request
+            getData();                                  //calling this function to get data from database
         }
-
     }, [])
 
+    //to trigger delete modal
+    const handleShow = (item) => {
+        setShow(true)           //trigger delete modal
+        setPassData(item)       //passing data from the delete button to delete modal
+    };
+
+    //filter out the data using dates
     let dateRangePicker = async () => {
         let formatDate1 = new Date(value[0]).getTime()
         let formatDate2 = new Date(value[1]).getTime()
-        // let result = moment(formatDate).format('DD/MM/YYYY');
-        if (!formatDate1 || !formatDate2) return
-        console.log(formatDate2)
-        console.log(formatDate1)
+        if (!formatDate1 || !formatDate2) return            //return nothing if no date is provided
         let dbData = await axios.get("http://localhost:3001/expenses-list", {
             headers: {
-                token: refToken.current
+                token: refToken.current             //passing token in header to process request
             }
         })
-        let dates = dbData.data;
-        console.log(dates)
-        let result = dates.filter(data => {
+        let dates = dbData.data;                //holding data from the database in date variable 
+        let result = dates.filter(data => {             //storing only dates between the range specified in result variable
             let value = new Date(data.date).getTime()
-            console.log(value)
             return value >= formatDate1 && value <= formatDate2;
         })
-        console.log(result)
-        setData(result)
+        setData(result)     //setting the data only between the range specified in result variable
         let amount = result.map(item => item.amount).reduce((previousValue, currentValue) => {
             return previousValue + currentValue
         })
-        setTotalAmount(amount)
-
+        setTotalAmount(amount)      //setting total amount between the range specified
     }
 
+    //get data from database
     let getData = async () => {
         let data = await axios.get("http://localhost:3001/expenses-list", {
             headers: {
-                token: refToken.current
+                token: refToken.current         //passing token in header to process request
             }
         })
-        console.log(data)
-        setData(data.data);
-        addingAmount(data.data)
+        setData(data.data);             //set data from database globally
+        addingAmount(data.data)         //passing data to add amount function to add total amount from database
     }
 
+    //handle the delete operation
     const handleDelete = async (id) => {
         await axios.delete("http://localhost:3001/expenses-list/" + id, {
             headers: {
-                token: refToken.current
+                token: refToken.current         //passing token in header to process request
             }
         })
-        setShow(false)
-        getData();
+        setShow(false)          //close the delete modal after delete operation
+        getData();              //trigger this function to re-render after delete operation
     };
+
+    // function to add all the amount from database
     let addingAmount = async (item) => {
-        console.log("Adding is working")
         let data = item;
         let result = await data.map(item => item.amount).reduce((previousValue, currentValue) => {
             return previousValue + currentValue
         })
-        if (result === 0 || isNaN(result) || result === null) return setTotalAmount(0)
-        return setTotalAmount(result)
+        if (result === 0 || isNaN(result) || result === null) return setTotalAmount(0)  //setting 0 if amount doesn't not exist
+        return setTotalAmount(result)       //setting total amount
     }
 
     return (
@@ -120,19 +111,7 @@ export default function ExpensesList({ value }) {
                         </tr>
                     </thead>
                     <tbody>
-                        {/* <tr>
-                            <td>1</td>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                            <td>@mdo</td>
-                            <td>@mdo</td>
-                            <td className="text-center">
-                                <IconButton className="expensesList__delButton" onClick={handleDelete}>
-                                    <CloseIcon />
-                                </IconButton>
-                            </td>
-                        </tr> */}
+                        {/* data from the database will render one by one with help of map function */}
                         {data.map((item, key) => {
                             return <tr>
                                 <td>{key + 1}</td>
@@ -156,7 +135,9 @@ export default function ExpensesList({ value }) {
                         </tr>
                     </tbody>
                 </Table>
-                <Modal show={show} size="lg" onHide={handleClose} backdrop="static" keyboard={false}>
+
+                {/* for deleting the expense */}
+                <Modal show={show} size="lg" onHide={() => setShow(false)} backdrop="static" keyboard={false}>
                     <Modal.Header closeButton>
                         <Modal.Title >
                             Do you want to delete this?
