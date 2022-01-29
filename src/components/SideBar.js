@@ -41,6 +41,7 @@ export default function SideBar() {
         list.forEach(item => {
             item.addEventListener("mouseover", activeLink)
         })
+        setShow("dashboard")
     }, [])
 
 
