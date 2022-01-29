@@ -7,6 +7,7 @@ import * as yup from "yup";
 import { useFormik } from "formik";
 import axios from "axios";
 import { ErrorMessage } from "./Utils";
+import { API_URL } from "./GlobalConstant"
 
 function SignUp() {
     const [error, setError] = useState(null)            //hook to display error message from the server
@@ -15,7 +16,7 @@ function SignUp() {
     const onSubmit = async (values) => {
         const { confirmPassword, ...data } = values;            //Destructured the values from formik
         const response = await axios
-            .post("http://localhost:3001/signup", data)
+            .post(`${API_URL}/signup`, data)
             .catch((err) => {
                 if (err && err.response)
                     console.log(err.response)

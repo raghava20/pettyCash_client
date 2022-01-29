@@ -13,6 +13,7 @@ import * as yup from "yup";
 import { ErrorMessage } from "./Utils";
 import { useNavigate } from 'react-router-dom';
 import jwt from "jsonwebtoken";
+import { API_URL } from "./GlobalConstant"
 
 export default function Dashboard() {
     const [month, setMonth] = useState("")      //hook to change name on month basis
@@ -71,7 +72,7 @@ export default function Dashboard() {
 
     //It will trigger once formik validation get passed
     const handleSave = async (data) => {
-        await axios.post("http://localhost:3001/transferred-amount", {
+        await axios.post(`${API_URL}/transferred-amount`, {
             bankName: data.bankName,
             accountNumber: data.accountNumber,
             date: format(new Date(data.date), 'dd/MM/yyyy'),    //formatting date using date-fns package
@@ -86,7 +87,7 @@ export default function Dashboard() {
 
     //getting data from db by adding amount from add amount button
     let getDataFromDB = async () => {
-        let data = await axios.get("http://localhost:3001/expenses-list", {
+        let data = await axios.get(`${API_URL}/expenses-list`, {
             headers: {
                 token: refToken.current
             }
@@ -118,7 +119,7 @@ export default function Dashboard() {
 
     //resetting amount in the expenses card
     const resetAmtHandler = async () => {
-        await axios.delete("http://localhost:3001/dashboard", {
+        await axios.delete(`${API_URL}/dashboard`, {
             headers: {
                 token: refToken.current     //passing token in header to process request
             }
@@ -130,7 +131,7 @@ export default function Dashboard() {
     //to add amount in expenses card
     const addAmtHandler = async () => {
         setAddModalOpen(false)          //handle to close add amount modal
-        await axios.post("http://localhost:3001/dashboard", { amount: getValuesFromInputModal }, {
+        await axios.post(`${API_URL}/dashboard`, { amount: getValuesFromInputModal }, {
             headers: {
                 token: refToken.current     //passing token in header to process request
             }
@@ -141,7 +142,7 @@ export default function Dashboard() {
 
     //get data from database
     const getAmtFromDB = async (amount) => {
-        let data = await axios.get("http://localhost:3001/dashboard", {
+        let data = await axios.get(`${API_URL}/dashboard`, {
             headers: {
                 token: refToken.current     //passing token in header to process request
             }

@@ -5,6 +5,7 @@ import image from "../images/img1.png";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { ErrorMessage } from "./Utils";
+import { API_URL } from "./GlobalConstant"
 
 export default function ForgotPassword() {
     const [error, setError] = useState(null)            //hook to display the error message from the server
@@ -12,7 +13,7 @@ export default function ForgotPassword() {
 
     // function will run after validation get passed
     const onSubmit = async (values) => {
-        await fetch("http://localhost:3001/forgot-password", {          //handled the update request with fetch
+        await fetch(`${API_URL}/forgot-password`, {          //handled the update request with fetch
             method: "PUT",
             headers: {
                 'Content-Type': 'application/json'

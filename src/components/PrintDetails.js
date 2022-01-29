@@ -6,13 +6,14 @@ import axios from "axios";
 import { useNavigate, Link } from 'react-router-dom'
 import { PrintContext } from "../App"
 import jwt from "jsonwebtoken"
+import { API_URL } from "./GlobalConstant"
 
 export default function PrintDetails() {
     const [showModal, setShowModal] = useState(false)       //hook to handle add details modal
-    const [companyName, setCompanyName] = useState("")      //hook to handle store company name
-    const [address, setAddress] = useState("")              //hook to handle store address
-    const [email, setEmail] = useState("")                  //hook to handle store email
-    const [contact, setContact] = useState("")              //hook to handle store contact
+    const [companyName, setCompanyName] = useState("")      //hook to store company name
+    const [address, setAddress] = useState("")              //hook to store address
+    const [email, setEmail] = useState("")                  //hook to store email
+    const [contact, setContact] = useState("")              //hook to store contact
     const [enableButton, setEnableButton] = useState(false) //hook to handle disable button on input
 
     let context = useContext(PrintContext)      //getting data from context api
@@ -33,7 +34,7 @@ export default function PrintDetails() {
 
     // getting data from database
     const getDataFromDB = async () => {
-        let { data: [{ companyName, address, email, contact }] } = await axios.get("http://localhost:3001/dashboard/print-details", {       //Destructured the data
+        let { data: [{ companyName, address, email, contact }] } = await axios.get(`${API_URL}/dashboard/print-details`, {       //Destructured the data
             headers: {
                 token: refToken.current     //passing token in header to process request
             }
@@ -56,7 +57,7 @@ export default function PrintDetails() {
     // function will run after submit button is clicked
     const handleSave = async (e) => {
         e.preventDefault();                 //to prevent page reload of form's default behavior
-        await axios.put("http://localhost:3001/dashboard/print-details",
+        await axios.put(`${API_URL}/dashboard/print-details`,
             {
                 companyName: companyName,
                 address: address,

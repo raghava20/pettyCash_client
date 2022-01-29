@@ -6,6 +6,7 @@ import { useFormik } from "formik";
 import { ErrorMessage } from "./Utils";
 import axios from "axios";
 import { Link, useNavigate } from 'react-router-dom';
+import { API_URL } from "./GlobalConstant"
 
 function Login() {
     let navigate = useNavigate();               //for changing the route
@@ -28,14 +29,13 @@ function Login() {
         if (values.password.length > 18) {
             errors.password = "Password is too long!";
         }
-
         return errors;              //return errors if any of the errors are triggered
     }
 
     // function will run after validation get passed
     const onSubmit = async (values) => {
         try {
-            const response = await axios.post("http://localhost:3001/login", {
+            const response = await axios.post(`${API_URL}/login`, {
                 email: values.email,
                 password: values.password
             })

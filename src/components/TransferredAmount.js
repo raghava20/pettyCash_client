@@ -6,6 +6,7 @@ import axios from "axios";
 import { IconButton } from '@mui/material';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import jwt from "jsonwebtoken";
+import { API_URL } from "./GlobalConstant"
 
 export default function TransferredAmount({ value }) {
     const [data, setData] = useState([]);                   //hook to store data from the database
@@ -29,7 +30,7 @@ export default function TransferredAmount({ value }) {
 
     //function to get data from database
     let getData = async () => {
-        let data = await axios.get("http://localhost:3001/transferred-amount", {
+        let data = await axios.get(`${API_URL}/transferred-amount`, {
             headers: {
                 token: refToken.current
             }
@@ -52,7 +53,7 @@ export default function TransferredAmount({ value }) {
         let formatDate1 = new Date(value[0]).getTime()
         let formatDate2 = new Date(value[1]).getTime()
         if (!formatDate1 || !formatDate2) return                //return nothing if date doesn't provide
-        let dbData = await axios.get("http://localhost:3001/transferred-amount", {
+        let dbData = await axios.get(`${API_URL}/transferred-amount`, {
             headers: {
                 token: refToken.current                 //passing token in header to process request
             }

@@ -7,6 +7,7 @@ import { useFormik } from "formik";
 import { ErrorMessage } from "./Utils";
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { API_URL } from "./GlobalConstant"
 
 export default function ResetPassword() {
     const [error, setError] = useState(null)        //hook to handle error message from the server
@@ -16,7 +17,7 @@ export default function ResetPassword() {
 
     //function will run after validation get passed
     const onSubmit = async (values) => {
-        await fetch("http://localhost:3001/reset-password", {           //handled put request with fetch
+        await fetch(`${API_URL}/reset-password`, {           //handled put request with fetch
             method: "PUT",
             headers: {
                 'Content-Type': 'application/json'

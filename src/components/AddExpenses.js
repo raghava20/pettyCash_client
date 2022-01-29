@@ -11,6 +11,7 @@ import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import { format } from 'date-fns'
 import jwt from "jsonwebtoken";
+import { API_URL } from "./GlobalConstant"
 
 export default function AddExpenses() {
     let [open, setOpen] = useState(false)       //for handling alert box 
@@ -61,7 +62,7 @@ export default function AddExpenses() {
     })
 
     let handleSave = async (data) => {
-        await axios.post("http://localhost:3001/add-expenses", {
+        await axios.post(`${API_URL}/add-expenses`, {
             expensesCategory: data.expensesCategory,
             date: format(new Date(data.date), 'MM/dd/yyyy'),        //formatting date using date-fns package
             amount: data.amount,

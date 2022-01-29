@@ -8,6 +8,7 @@ import { Modal, Container, Row, Col, Button } from 'react-bootstrap';
 import axios from "axios";
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import jwt from "jsonwebtoken";
+import { API_URL } from "./GlobalConstant"
 
 export default function ExpensesList({ value }) {
     const [show, setShow] = useState(false);        //hook to handle delete expense modal
@@ -41,7 +42,7 @@ export default function ExpensesList({ value }) {
         let formatDate1 = new Date(value[0]).getTime()
         let formatDate2 = new Date(value[1]).getTime()
         if (!formatDate1 || !formatDate2) return            //return nothing if no date is provided
-        let dbData = await axios.get("http://localhost:3001/expenses-list", {
+        let dbData = await axios.get(`${API_URL}/expenses-list`, {
             headers: {
                 token: refToken.current             //passing token in header to process request
             }
@@ -60,7 +61,7 @@ export default function ExpensesList({ value }) {
 
     //get data from database
     let getData = async () => {
-        let data = await axios.get("http://localhost:3001/expenses-list", {
+        let data = await axios.get(`${API_URL}/expenses-list`, {
             headers: {
                 token: refToken.current         //passing token in header to process request
             }
@@ -71,7 +72,7 @@ export default function ExpensesList({ value }) {
 
     //handle the delete operation
     const handleDelete = async (id) => {
-        await axios.delete("http://localhost:3001/expenses-list/" + id, {
+        await axios.delete(`${API_URL}/expenses-list/` + id, {
             headers: {
                 token: refToken.current         //passing token in header to process request
             }
