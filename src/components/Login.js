@@ -34,20 +34,20 @@ function Login() {
 
     // function will run after validation get passed
     const onSubmit = async (values) => {
-        try {
-            const response = await axios.post(`${API_URL}/login`, {
-                email: values.email,
-                password: values.password
-            })
-            setError(response.message)          //setting the error message from the database
-            if (response.data) {
-                await localStorage.setItem('token', response.data);         //storing the token in localStorage
-                navigate('/dashboard')                                      //if data is available it will navigate to dashboard
-            }
+
+        const response = await axios.post(`${API_URL}/login`, {
+            email: values.email,
+            password: values.password
+        }).catch((err) => {
+            if (err && err.response)
+                setError(err.response.data.message);        //setting the error message from the server to display on UI
+        });
+
+        if (response.data) {
+            await localStorage.setItem('token', response.data);         //storing the token in localStorage
+            navigate('/dashboard')                                      //if data is available it will navigate to dashboard
         }
-        catch (error) {
-            console.warn(error)             //instead of logging the error we just warn the user on console
-        }
+
     }
 
     // formik for handling form validation

@@ -24,6 +24,7 @@ export default function ForgotPassword() {
         })
             .then(data => data.json())
             .then(data => setError(data.message))           //setting the error message from the server
+            .catch((err) => setError(err.message))
         if (error === "Email has been sent, kindly follow the instructions.") return setDisabled(true)      //disable button after the success message
     }
 

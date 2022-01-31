@@ -19,8 +19,7 @@ function SignUp() {
             .post(`${API_URL}/signup`, data)
             .catch((err) => {
                 if (err && err.response)
-                    console.log(err.response)
-                setError(err.response.data.message);        //setting the error message from the server to display on UI
+                    setError(err.response.data.message);        //setting the error message from the server to display on UI
             });
         setError(response.data.message)
         if (response.data.message === "Successfully Registered!") {
