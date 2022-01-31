@@ -1,4 +1,4 @@
-## Heroku URL: https://petty-cash-manager.herokuapp.com
+## Netlify URL: https://quirky-keller-607fbf.netlify.app
 
 ## EndPoint: 
 
