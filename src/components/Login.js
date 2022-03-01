@@ -90,6 +90,11 @@ function Login() {
                 <div className="footer">
                     Don't have an account yet? <Link to="/signup" className="links">Sign Up</Link>
                 </div>
+                <p>
+                    Demo Credentials: &nbsp;
+                    <small style={{ position: "relative", bottom: "9px" }}><i class="fa-solid fa-envelope"></i></small> demo@gmail.com &nbsp;
+                    <small style={{ position: "relative", bottom: "9px" }}><i class="fa-solid fa-lock-open"></i> </small>Password!123
+                </p>
             </div>
         </>
     )
